@@ -102,6 +102,152 @@
           "value": "@input[recovered]"
         }
       ]
+    },
+    {
+      "id": "transfer",
+      "title": "Send",
+      "description": "Transfer tokens.",
+      "image": {
+        "url": "https://i.ibb.co/xqF4NWv/icons8-send-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "Token contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "recipient",
+          "title": "Recipient",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "eoa": true,
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "amount",
+          "title": "Amount to send",
+          "type": "int",
+          "unit": "Token",
+          "scale": "18",
+          "validation": [
+            {
+              "type": "range",
+              "min": "1",
+              "max": "1000000000"
+            }
+          ]
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "DummyWallet",
+          "address": "@input[contractAddress]",
+          "method": "transfer",
+          "args": {
+            "_to": "@input[recipient]",
+            "_amount": "@input[amount]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "setGuardian",
+      "title": "Set Guardian",
+      "description": "Set Guardian.",
+      "image": {
+        "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "encryptedGuardianAddress",
+          "title": "Encrypted Guardian Address",
+          "type": "bytes32"
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "DummyWallet",
+          "address": "@input[contractAddress]",
+          "method": "setGuardian",
+          "args": {
+            "encryptedGuardianAddress": "@input[encryptedGuardianAddress]"
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "id": "zkRecover",
+      "title": "recover",
+      "description": "recover.",
+      "image": {
+        "url": "https://i.ibb.co/J2MC23k/icons8-restore-page-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "recoveryAddress",
+          "title": "Recovery Address",
+          "type": "address"
+        },
+        {
+          "name": "proofHash",
+          "title": "Proof Hash",
+          "type": "bytes32"
+        },
+        {
+          "name": "proofData",
+          "title": "Proof data",
+          "type": "string"
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "DummyWallet",
+          "address": "@input[contractAddress]",
+          "method": "zkRecover",
+          "args": {
+            "_recoveryAddress": "@input[recoveryAddress]",
+            "_proofHash": "@input[proofHash]",
+            "_proofData": "@input[proofData]"
+          }
+        }
+      ]
     }
   ]
 }
