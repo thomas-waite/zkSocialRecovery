@@ -1,0 +1,7 @@
+import "hashes/sha256/512bitPacked" as sha256packed
+
+def main(private field a, private field b, private field c, private field d) -> (field):
+    h = sha256packed([a, b, c, d])
+    h[0] == 258181812597824344250371869973158581554
+    h[1] == 235261871347228706916794216660129947860
+    return 1
