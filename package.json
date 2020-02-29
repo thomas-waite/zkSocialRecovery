@@ -1,0 +1,23 @@
+{
+  "name": "zksocialrecovery",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "truffle test --network development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomas-waite/zkSocialRecovery.git"
+  },
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/thomas-waite/zkSocialRecovery/issues"
+  },
+  "homepage": "https://github.com/thomas-waite/zkSocialRecovery#readme",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.0.32",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0"
+  }
+}
