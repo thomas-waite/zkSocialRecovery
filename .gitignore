@@ -4,4 +4,5 @@ build
 
 # files
 .env
+package-lock.json
 yarn-error.log

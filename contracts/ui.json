@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "id": "zk-social-recovery",
+  "title": "ZK Social Recovery",
+  "description": "Deploy your own Wallet.",
+  "aboutUrl": "https://github.com/solui/demo",
+  "image": {
+    "url": "https://i.ibb.co/tDmSSXw/icons8-socrates-100.png"
+  },
+  "panels": [
+    {
+      "id": "create",
+      "title": "Create wallet",
+      "description": "Deploy new ZK-recovery wallet.",
+      "image": {
+        "url": "https://i.ibb.co/g79xx1y/icons8-factory-96.png"
+      },
+      "inputs": [
+        {
+          "name": "owner",
+          "title": "Owner",
+          "type": "address",
+          "initialValue": "@env[account]"
+        },
+        {
+          "name": "transferable",
+          "title": "Transferable",
+          "type": "bool",
+          "placeholder": "true"
+        },
+        {
+          "name": "threshold",
+          "title": "Threshold",
+          "type": "int"
+        } 
+      ],
+      "execs": [
+        {
+          "type": "deploy",
+          "contract": "Wallet",
+          "args": {
+            "_owner": "@input[owner]",
+            "_transferable": "@input[transferable]",
+            "_threshold": "@input[threshold]"
+          },
+          "saveResultAsInput": "contractAddress"
+        }
+      ],
+      "outputs": [
+        {
+          "title": "New contract address",
+          "type": "address",
+          "value": "@input[contractAddress]"
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "title": "View wallet state",
+      "description": "View wallet state.",
+      "image": {
+        "url": "https://i.ibb.co/hLmm9mp/icons8-wallet-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        }
+      ],
+      "execs": [
+        {
+          "type": "call",
+          "contract": "Wallet",
+          "address": "@input[contractAddress]",
+          "method": "recoveryThreshold",
+          "saveResultAsInput": "recoveryThreshold"
+        }
+      ],
+      "outputs": [
+        {
+          "title": "Recovery Threshold",
+          "type": "int",
+          "value": "@input[recoveryThreshold]"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Send",
+      "description": "Transfer tokens.",
+      "image": {
+        "url": "https://i.ibb.co/xqF4NWv/icons8-send-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "Token contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "recipient",
+          "title": "Recipient",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "eoa": true,
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "amount",
+          "title": "Amount to send",
+          "type": "int",
+          "unit": "Token",
+          "scale": "18",
+          "validation": [
+            {
+              "type": "range",
+              "min": "1",
+              "max": "1000000000"
+            }
+          ]
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "Wallet",
+          "address": "@input[contractAddress]",
+          "method": "transfer",
+          "args": {
+            "_to": "@input[recipient]",
+            "_amount": "@input[amount]"
+          }
+        }
+      ]
+    },
+    {
+      "id": "addZkCommit",
+      "title": "Add new address hash",
+      "description": "Set Guardian.",
+      "image": {
+        "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "commit",
+          "title": "Hashed Guardian Address",
+          "type": "bytes32"
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "Wallet",
+          "address": "@input[contractAddress]",
+          "method": "addZkCommit",
+          "args": {
+            "_commit": "@input[commit]"
+          }
+        }
+      ]
+    }
+    ,
+    {
+      "id": "zkRecover",
+      "title": "recover",
+      "description": "recover.",
+      "image": {
+        "url": "https://i.ibb.co/J2MC23k/icons8-restore-page-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "recoveryAddress",
+          "title": "Recovery Address",
+          "type": "address"
+        },
+        {
+          "name": "proofHash",
+          "title": "Proof Hash",
+          "type": "bytes32"
+        },
+        {
+          "name": "proofData",
+          "title": "Proof data",
+          "type": "string"
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "Wallet",
+          "address": "@input[contractAddress]",
+          "method": "zkRecover",
+          "args": {
+            "_recoveryAddress": "@input[recoveryAddress]",
+            "_proofHash": "@input[proofHash]",
+            "_proofData": "@input[proofData]"
+          }
+        }
+      ]
+    }
+  ]
+}
