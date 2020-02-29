@@ -1,7 +1,7 @@
 {
   "version": 1,
   "id": "zk-social-recovery",
-  "title": "ZK Social Recovery",
+  "title": "Zk Social Recovery",
   "description": "Deploy your own Wallet.",
   "aboutUrl": "https://github.com/solui/demo",
   "image": {
@@ -37,7 +37,7 @@
       "execs": [
         {
           "type": "deploy",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "args": {
             "_owner": "@input[owner]",
             "_transferable": "@input[transferable]",
@@ -77,7 +77,7 @@
       "execs": [
         {
           "type": "call",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "recoveryThreshold",
           "saveResultAsInput": "recoveryThreshold"
@@ -140,7 +140,7 @@
       "execs": [
         {
           "type": "send",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "transfer",
           "args": {
@@ -178,61 +178,11 @@
       "execs": [
         {
           "type": "send",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "addZkCommit",
           "args": {
             "_commit": "@input[commit]"
-          }
-        }
-      ]
-    }
-    ,
-    {
-      "id": "zkRecover",
-      "title": "recover",
-      "description": "recover.",
-      "image": {
-        "url": "https://i.ibb.co/J2MC23k/icons8-restore-page-96.png"
-      },
-      "inputs": [
-        {
-          "name": "contractAddress",
-          "title": "wallet contract address",
-          "type": "address",
-          "validation": [
-            {
-              "type": "allowedTypes",
-              "contract": true
-            }
-          ]
-        },
-        {
-          "name": "recoveryAddress",
-          "title": "Recovery Address",
-          "type": "address"
-        },
-        {
-          "name": "proofHash",
-          "title": "Proof Hash",
-          "type": "bytes32"
-        },
-        {
-          "name": "proofData",
-          "title": "Proof data",
-          "type": "string"
-        }
-      ],
-      "execs": [
-        {
-          "type": "send",
-          "contract": "Wallet",
-          "address": "@input[contractAddress]",
-          "method": "zkRecover",
-          "args": {
-            "_recoveryAddress": "@input[recoveryAddress]",
-            "_proofHash": "@input[proofHash]",
-            "_proofData": "@input[proofData]"
           }
         }
       ]

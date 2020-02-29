@@ -2,5 +2,10 @@ pragma solidity ^0.6.1;
 
 
 interface IProofValidator {
-    function validateProof(bytes32, bytes calldata) external returns (bool);
+    function verifyTx(
+        uint[2] calldata a,
+        uint[2][2] calldata b,
+        uint[2] calldata c,
+        uint[1] calldata input)
+    external returns (bool);
 }

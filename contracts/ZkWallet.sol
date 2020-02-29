@@ -6,7 +6,7 @@ import "./lib/SafeMath.sol";
 import "./interfaces/IProofValidator.sol";
 
 //// @title Smart contract wallet with ZK recovery capability.
-contract Wallet is Ownable {
+contract ZkWallet is Ownable {
 
     using SafeMath for uint256;
 
@@ -33,7 +33,7 @@ contract Wallet is Ownable {
     }
 
     /// @dev Receive function.
-    receive() external payable {
+    fallback() external payable {
         emit Received(msg.sender, msg.value);
     }
 
@@ -82,9 +82,8 @@ contract Wallet is Ownable {
         }
     }
 
-    function zkRecover(address payable _recoveryAddress, bytes32 _proofHash, bytes calldata _proofData) external returns (bool){
-
-        bool isValid = IProofValidator(validatorContract).validateProof(_proofHash, _proofData);
+    function zkRecover(address payable _recoveryAddress, uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[1] memory input) public returns (bool){
+        bool isValid = IProofValidator(validatorContract).verifyTx(a, b, c, input);
         if (isValid){
             _proofsValidated++;
         }
@@ -109,6 +108,4 @@ contract Wallet is Ownable {
         // Emit the transfer event.
         emit Transferred(_to, _amount);
     }
-
-
 }
