@@ -11,7 +11,7 @@
     {
       "id": "create",
       "title": "Create wallet",
-      "description": "Deploy new Dummy wallet.",
+      "description": "Deploy new ZK-recovery wallet.",
       "image": {
         "url": "https://i.ibb.co/g79xx1y/icons8-factory-96.png"
       },
@@ -37,7 +37,7 @@
       "execs": [
         {
           "type": "deploy",
-          "contract": "DummyWallet",
+          "contract": "Wallet",
           "args": {
             "_owner": "@input[owner]",
             "_transferable": "@input[transferable]",
@@ -77,17 +77,10 @@
       "execs": [
         {
           "type": "call",
-          "contract": "DummyWallet",
+          "contract": "Wallet",
           "address": "@input[contractAddress]",
-          "method": "_recoveryThreshold",
+          "method": "recoveryThreshold",
           "saveResultAsInput": "recoveryThreshold"
-        },
-        {
-          "type": "call",
-          "contract": "DummyWallet",
-          "address": "@input[contractAddress]",
-          "method": "recovered",
-          "saveResultAsInput": "recovered"
         }
       ],
       "outputs": [
@@ -95,11 +88,6 @@
           "title": "Recovery Threshold",
           "type": "int",
           "value": "@input[recoveryThreshold]"
-        },
-        {
-          "title": "recovered",
-          "type": "bool",
-          "value": "@input[recovered]"
         }
       ]
     },
@@ -152,7 +140,7 @@
       "execs": [
         {
           "type": "send",
-          "contract": "DummyWallet",
+          "contract": "Wallet",
           "address": "@input[contractAddress]",
           "method": "transfer",
           "args": {
@@ -163,8 +151,8 @@
       ]
     },
     {
-      "id": "setGuardian",
-      "title": "Set Guardian",
+      "id": "addZkCommit",
+      "title": "Add new address hash",
       "description": "Set Guardian.",
       "image": {
         "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
@@ -182,19 +170,19 @@
           ]
         },
         {
-          "name": "encryptedGuardianAddress",
-          "title": "Encrypted Guardian Address",
+          "name": "commit",
+          "title": "Hashed Guardian Address",
           "type": "bytes32"
         }
       ],
       "execs": [
         {
           "type": "send",
-          "contract": "DummyWallet",
+          "contract": "Wallet",
           "address": "@input[contractAddress]",
-          "method": "setGuardian",
+          "method": "addZkCommit",
           "args": {
-            "encryptedGuardianAddress": "@input[encryptedGuardianAddress]"
+            "_commit": "@input[commit]"
           }
         }
       ]
@@ -238,7 +226,7 @@
       "execs": [
         {
           "type": "send",
-          "contract": "DummyWallet",
+          "contract": "Wallet",
           "address": "@input[contractAddress]",
           "method": "zkRecover",
           "args": {

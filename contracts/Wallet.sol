@@ -18,9 +18,9 @@ contract Wallet is Ownable {
     address public validatorContract;
     mapping(bytes32 => bool) public zkCommits;
 
-    uint public _commitCnt;
+    uint public commitCnt;
+    uint public recoveryThreshold;
 
-    uint private _recoveryThreshold;
     uint private _proofsValidated;
 
     /// @dev Constructor initializes the wallet top up limit and the vault contract.
@@ -28,12 +28,23 @@ contract Wallet is Ownable {
     /// @param _transferable indicates whether the contract ownership can be transferred.
     /// @param _threshold indicates how many proofs need to be provided in order to recover the wallet.
     constructor(address payable _owner, bool _transferable, uint8 _threshold) Ownable(_owner, _transferable) public {
-        _recoveryThreshold = _threshold;
+        recoveryThreshold = _threshold;
     }
 
-    /// @dev Fallback function.
+    /// @dev Receive function.
     receive() external payable {
         emit Received(msg.sender, msg.value);
+    }
+
+    function addZkCommit(bytes32 _commit) external onlyOwner {
+
+        // Dedup commits before adding them to the mapping
+        if (!zkCommits[_commit]) {
+            // adds to the whitelist mapping
+            zkCommits[_commit] = true;
+            commitCnt++;
+        }
+        emit CommittedZK(_commit);
     }
 
     function addZkCommits(bytes32[] calldata _commits) external onlyOwner {
@@ -44,7 +55,7 @@ contract Wallet is Ownable {
             if (!zkCommits[commit]) {
                 // adds to the whitelist mapping
                 zkCommits[commit] = true;
-                _commitCnt++;
+                commitCnt++;
             }
             emit CommittedZK(commit);
         }
@@ -58,7 +69,7 @@ contract Wallet is Ownable {
             if (zkCommits[commit]) {
                 // adds to the whitelist mapping
                 zkCommits[commit] = false;
-                _commitCnt = _commitCnt.sub(1);
+                commitCnt = commitCnt.sub(1);
             }
             emit UncommittedZK(commit);
         }
@@ -73,7 +84,7 @@ contract Wallet is Ownable {
         else{
             //slash malicious actor
         }
-        if(_proofsValidated == _recoveryThreshold){
+        if(_proofsValidated == recoveryThreshold){
             _proofsValidated = 0;
             _transferOwnership(_recoveryAddress, true);
         }
