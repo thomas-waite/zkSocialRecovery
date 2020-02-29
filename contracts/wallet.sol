@@ -1,4 +1,4 @@
-pragma solidity ^0.5.15;
+pragma solidity ^0.6.1;
 
 
 import "./lib/ownable.sol";
@@ -25,7 +25,7 @@ contract Wallet is Ownable {
     }
 
     /// @dev Fallback function.
-    function() external payable {
+    fallback() external payable {
         emit Received(msg.sender, msg.value);
     }
 

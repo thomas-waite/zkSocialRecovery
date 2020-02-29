@@ -1,5 +1,6 @@
 // This file is LGPL3 Licensed
-pragma solidity >=0.5.0 <0.6.0;
+pragma solidity ^0.6.1;
+
 /**
  * @title Elliptic curve operations on twist points for alt_bn128
  * @author Mustafa Al-Bassam (mus@musalbas.com)
