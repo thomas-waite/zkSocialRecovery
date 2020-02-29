@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const Validator = artifacts.require('./zk/guardian/verifier');
 
-contract.only('zk proof validator', async () => {
+contract('zk proof validator', async () => {
     let proofObject;
     let validator;
 
@@ -18,7 +18,7 @@ contract.only('zk proof validator', async () => {
         proofObject = JSON.parse(rawProof);
     });
 
-    it.only('should validate proof that address maps to stored address', async () => {
+    it('should validate proof that address maps to stored address', async () => {
         const { proof, inputs } = proofObject;
         console.log({ proof, inputs });
         const { receipt } = await validator.verifyTx(proof.a, proof.b, proof.c, inputs);
