@@ -1,11 +1,13 @@
 # zKSocialRecovery
 
 To get started:
-1) Clone the repo
-2) Run `yarn install`
-3) To compile contracts, run `truffle compile --all`
+1) Clone the repo: `git clone https://github.com/thomas-waite/zkSocialRecovery.git`
+2) cd into the directory, `cd zkSocialRecovery`
+3) Start ganache in the background, `ganache-cli`
+4) Run `yarn install`
+5) Run `yarn start`
 
-Make sure you have `truffle` globally installed. To run tests, have `ganache-cli` globally installed before running `yarn test`.
+
 
 ## Running UI
 
@@ -35,4 +37,4 @@ eg:
 
 ### Adding more UI
 
-Read [the f**king doc](https://solui.dev/docs/specification)
+(https://solui.dev/docs/specification)
