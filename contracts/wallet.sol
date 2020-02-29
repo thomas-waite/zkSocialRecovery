@@ -25,7 +25,7 @@ contract Wallet is Ownable {
     }
 
     /// @dev Fallback function.
-    fallback() external payable {
+    receive() external payable {
         emit Received(msg.sender, msg.value);
     }
 
