@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --require @babel/polyfill --require  ./test/zk --bail --colors --exit --recursive --reporter spec",
-    "test:contracts": "truffle test ./test/contracts --network development",
+    "test:contracts": "truffle test ./test/contracts/wallet.js --network development",
     "clean": "rm -r build",
     "generate:digest": "node ./src/calcAddressHash.js"
   },

@@ -10,10 +10,11 @@ contract Wallet is Ownable {
 
     using SafeMath for uint256;
 
-    event Received(address _from, uint _amount);
-    event Transferred(address _to, uint _amount);
+    event Received(address indexed _from, uint _amount);
+    event Transferred(address indexed _to, uint _amount);
     event CommittedZK(bytes32 _commit);
     event UncommittedZK(bytes32 _commit);
+    event ProofValidator(address indexed validatorContract);
 
     address public validatorContract;
     mapping(bytes32 => bool) public zkCommits;
@@ -45,6 +46,12 @@ contract Wallet is Ownable {
             commitCnt++;
         }
         emit CommittedZK(_commit);
+    }
+
+    function setProofValidator(address _validator) public onlyOwner {
+        require(_validator != address(0x0), 'Wallet/can not set _validator to zero');
+        validatorContract = _validator;
+        emit ProofValidator(validatorContract);
     }
 
     function addZkCommits(bytes32[] calldata _commits) external onlyOwner {
