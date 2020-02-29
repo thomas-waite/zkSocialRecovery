@@ -4,3 +4,4 @@ build
 
 # files
 .env
+yarn-error.log
