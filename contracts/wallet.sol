@@ -2,19 +2,26 @@ pragma solidity ^0.6.1;
 
 
 import "./lib/ownable.sol";
+import "./lib/SafeMath.sol";
 import "./interfaces/IProofValidator.sol";
 
 //// @title Smart contract wallet with ZK recovery capability.
 contract Wallet is Ownable {
 
+    using SafeMath for uint256;
+
     event Received(address _from, uint _amount);
     event Transferred(address _to, uint _amount);
+    event CommittedZK(bytes32 _commit);
+    event UncommittedZK(bytes32 _commit);
 
     address public validatorContract;
-    mapping(bytes32 => bool) public zkMerlins;
+    mapping(bytes32 => bool) public zkCommits;
 
-    uint8 private _recoveryThreshold;
-    uint8 private _proofsValidated;
+    uint public _commitCnt;
+
+    uint private _recoveryThreshold;
+    uint private _proofsValidated;
 
     /// @dev Constructor initializes the wallet top up limit and the vault contract.
     /// @param _owner is the owner account of the wallet contract.
@@ -25,8 +32,36 @@ contract Wallet is Ownable {
     }
 
     /// @dev Fallback function.
-    fallback() external payable {
+    receive() external payable {
         emit Received(msg.sender, msg.value);
+    }
+
+    function addZkCommits(bytes32[] calldata _commits) external onlyOwner {
+
+        for (uint i = 0; i < _commits.length; i++) {
+            bytes32 commit = _commits[i];
+            // Dedup commits before adding them to the mapping
+            if (!zkCommits[commit]) {
+                // adds to the whitelist mapping
+                zkCommits[commit] = true;
+                _commitCnt++;
+            }
+            emit CommittedZK(commit);
+        }
+    }
+
+    function removeZkCommits(bytes32[] calldata _commits) external onlyOwner {
+
+        for (uint i = 0; i < _commits.length; i++) {
+            bytes32 commit = _commits[i];
+            // Dedup commits before adding them to the mapping
+            if (zkCommits[commit]) {
+                // adds to the whitelist mapping
+                zkCommits[commit] = false;
+                _commitCnt = _commitCnt.sub(1);
+            }
+            emit UncommittedZK(commit);
+        }
     }
 
     function zkRecover(address payable _recoveryAddress, bytes32 _proofHash, bytes calldata _proofData) external returns (bool){
