@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "id": "zk-social-recovery",
+  "title": "ZK Social Recovery",
+  "description": "Deploy your own Wallet.",
+  "aboutUrl": "https://github.com/solui/demo",
+  "image": {
+    "url": "https://i.ibb.co/tDmSSXw/icons8-socrates-100.png"
+  },
+  "panels": [
+    {
+      "id": "create",
+      "title": "Create wallet",
+      "description": "Deploy new Dummy wallet.",
+      "image": {
+        "url": "https://i.ibb.co/g79xx1y/icons8-factory-96.png"
+      },
+      "inputs": [
+        {
+          "name": "owner",
+          "title": "Owner",
+          "type": "address"
+        },
+        {
+          "name": "transferable",
+          "title": "Transferable",
+          "type": "bool"
+        },
+        {
+          "name": "threshold",
+          "title": "Threshold",
+          "type": "int"
+        } 
+      ],
+      "execs": [
+        {
+          "type": "deploy",
+          "contract": "DummyWallet",
+          "args": {
+            "_owner": "@input[owner]",
+            "_transferable": "@input[transferable]",
+            "_threshold": "@input[threshold]"
+          },
+          "saveResultAsInput": "contractAddress"
+        }
+      ],
+      "outputs": [
+        {
+          "title": "New contract address",
+          "type": "address",
+          "value": "@input[contractAddress]"
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "title": "View wallet state",
+      "description": "View wallet state.",
+      "image": {
+        "url": "https://i.ibb.co/hLmm9mp/icons8-wallet-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        }
+      ],
+      "execs": [
+        {
+          "type": "call",
+          "contract": "DummyWallet",
+          "address": "@input[contractAddress]",
+          "method": "_recoveryThreshold",
+          "saveResultAsInput": "recoveryThreshold"
+        },
+        {
+          "type": "call",
+          "contract": "DummyWallet",
+          "address": "@input[contractAddress]",
+          "method": "recovered",
+          "saveResultAsInput": "recovered"
+        }
+      ],
+      "outputs": [
+        {
+          "title": "Recovery Threshold",
+          "type": "string",
+          "value": "@input[recoveryThreshold]"
+        },
+        {
+          "title": "recovered",
+          "type": "string",
+          "value": "@input[recovered]"
+        }
+      ]
+    }
+  ]
+}
