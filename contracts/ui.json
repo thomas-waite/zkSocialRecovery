@@ -19,12 +19,14 @@
         {
           "name": "owner",
           "title": "Owner",
-          "type": "address"
+          "type": "address",
+          "initialValue": "@env[account]"
         },
         {
           "name": "transferable",
           "title": "Transferable",
-          "type": "bool"
+          "type": "bool",
+          "placeholder": "true"
         },
         {
           "name": "threshold",
@@ -91,12 +93,12 @@
       "outputs": [
         {
           "title": "Recovery Threshold",
-          "type": "string",
+          "type": "int",
           "value": "@input[recoveryThreshold]"
         },
         {
           "title": "recovered",
-          "type": "string",
+          "type": "bool",
           "value": "@input[recovered]"
         }
       ]
