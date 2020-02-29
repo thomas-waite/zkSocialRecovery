@@ -23,7 +23,11 @@
   ],
   "outputs": [
     {
-      "type": "field"
+      "type": "array",
+      "components": {
+        "size": 2,
+        "type": "field"
+      }
     }
   ]
 }

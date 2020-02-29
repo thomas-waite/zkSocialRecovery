@@ -1,16 +1,17 @@
 const dotenv = require('dotenv');
 
 dotenv.config();
-const { sha3, toBN } = require('web3-utils');
+const { toBN } = require('web3-utils');
 
-function calcAddressHash() {
-    const guardianAddress = process.env.GUARDIAN;
-    const hashedAddress = (sha3(guardianAddress)).slice(2);
+const guardianAddress = process.env.GUARDIAN;
+console.log({ guardianAddress });
 
-    const firstHalfDigest = toBN(hashedAddress.slice(0, 32)).toString();
-    const secondHalfDigest = toBN(hashedAddress.slice(32, 64)).toString();
-
-    console.log({ firstHalfDigest, secondHalfDigest });
+function calcProofInput() {
+    const noZeroHexAddress = (guardianAddress.slice(2));
+    const firstHalfInput = (toBN(noZeroHexAddress.slice(0, 8))).toString();
+    const secondHalfInput = (toBN(noZeroHexAddress.slice(8, 40))).toString();
+    console.log({ firstHalfInput, secondHalfInput });
 }
 
-calcAddressHash();
+
+calcProofInput();
