@@ -8,13 +8,6 @@ To get started:
 5) Run `yarn start`
 
 
-
-## Running UI
-
-```
-solui view --spec contracts/ui.json --artifacts build/contracts
-```
-
 ### Updating logos
 
 - Seach the logos you like at https://icons8.com/
