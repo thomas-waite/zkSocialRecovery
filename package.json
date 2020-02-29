@@ -21,7 +21,14 @@
     "@truffle/hdwallet-provider": "^1.0.32",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
+<<<<<<< HEAD
     "zokrates-js": "1.0.21"
+||||||| constructed merge base
+    "zokrates-js": "^1.0.21"
+=======
+    "truffle": "5.1.15",
+    "zokrates-js": "^1.0.21"
+>>>>>>> Add truffle
   },
   "devDependencies": {
     "eslint": "^6.8.0",
