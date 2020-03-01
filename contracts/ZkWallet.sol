@@ -22,7 +22,6 @@ contract ZkWallet is Ownable {
     /// @dev Constructor initializes the wallet top up limit and the vault contract.
     /// @param _owner is the owner account of the wallet contract.
     /// @param _transferable indicates whether the contract ownership can be transferred.
-    /// @param _threshold indicates how many proofs need to be provided in order to recover the wallet.
     constructor(address payable _owner, bool _transferable) Ownable(_owner, _transferable) public {
     }
 
@@ -37,9 +36,9 @@ contract ZkWallet is Ownable {
         emit ProofValidator(validatorContract);
     }
 
-    function addGuardian(uint _input1, uint _input2) external onlyOwner {
-        firstHash = _input1;
-        secondHash = _input2;
+    function addGuardian(uint _firstHalfOfHash, uint _secondHalfOfHash) external onlyOwner {
+        firstHash = _firstHalfOfHash;
+        secondHash = _secondHalfOfHash;
         emit AddGuardian(firstHash, secondHash);
     }
 
