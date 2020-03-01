@@ -554,6 +554,9 @@ contract Verifier {
         Pairing.G2Point b;
         Pairing.G1Point c;
     }
+
+    constructor() public{}
+    
     function verifyingKey() pure internal returns (VerifyingKey memory vk) {
         vk.a = Pairing.G1Point(uint256(0x1936c240636390dc823e3a728e94b208eb53c6756d81da57ec3425e05d43ac10), uint256(0x2d70ff78e8216bf29d58923a686d9738278b8ce2fd822e197c85b09286d15566));
         vk.b = Pairing.G2Point([uint256(0x2b4daf047abe2e7f0b311118c1b963b63695dc0d769cea78849604434de055bf), uint256(0x29c13ecb6f33dbc4b3b8a02e2e255511ce4c26a8a2f299efcc94caf2de4fce00)], [uint256(0x1da9020008df7f549751f8a251af3b2dc4a2ad3e0870de54acaedd9fc1b47e17), uint256(0x25ea0d7e2b29de431b86a943db30dbf4d98f68df9ca8a9628d14d1591e817d90)]);
