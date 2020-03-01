@@ -19,6 +19,16 @@
       "name": "d",
       "public": false,
       "type": "field"
+    },
+    {
+      "name": "firstHash",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "secondHash",
+      "public": true,
+      "type": "field"
     }
   ],
   "outputs": [

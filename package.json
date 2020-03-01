@@ -7,7 +7,7 @@
     "test": "mocha --require @babel/polyfill --require  ./test/zk --bail --colors --exit --recursive --reporter spec",
     "test:contracts": "truffle test ./test/contracts/wallet.js --network development",
     "clean": "rm -r build",
-    "generate:digest": "node ./src/calcAddressHash.js",
+    "createProof": "scripts/createProof.sh",
     "start": "truffle compile && solui view --spec contracts/ui.json --artifacts build/contracts"
   },
   "repository": {
