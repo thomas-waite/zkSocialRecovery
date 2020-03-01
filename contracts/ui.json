@@ -27,12 +27,7 @@
           "title": "Transferable",
           "type": "bool",
           "placeholder": "true"
-        },
-        {
-          "name": "threshold",
-          "title": "Threshold",
-          "type": "int"
-        } 
+        }
       ],
       "execs": [
         {
@@ -40,8 +35,7 @@
           "contract": "ZkWallet",
           "args": {
             "_owner": "@input[owner]",
-            "_transferable": "@input[transferable]",
-            "_threshold": "@input[threshold]"
+            "_transferable": "@input[transferable]"
           },
           "saveResultAsInput": "contractAddress1"
         },
@@ -93,13 +87,6 @@
           "address": "@input[contractAddress]",
           "method": "owner",
           "saveResultAsInput": "owner"
-        },
-        {
-          "type": "call",
-          "contract": "ZkWallet",
-          "address": "@input[contractAddress]",
-          "method": "recoveryThreshold",
-          "saveResultAsInput": "recoveryThreshold"
         }
       ],
       "outputs": [
@@ -107,11 +94,6 @@
           "title": "Wallet Owner",
           "type": "address",
           "value": "@input[owner]"
-        },
-        {
-          "title": "Recovery Threshold",
-          "type": "int",
-          "value": "@input[recoveryThreshold]"
         }
       ]
     },
@@ -175,9 +157,9 @@
       ]
     },
     {
-      "id": "addZkCommit",
-      "title": "Add new address hash",
-      "description": "Set pre-image hash",
+      "id": "addGuardian",
+      "title": "addGuardian",
+      "description": "Add new guardian to wallet",
       "image": {
         "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
       },
@@ -194,118 +176,33 @@
           ]
         },
         {
-          "name": "commit",
-          "title": "Hashed pre-image",
-          "type": "bytes32"
-        }
-      ],
-      "execs": [
+          "name": "firstHalfOfHash",
+          "title": "First half of guardian address hash",
+          "type": "int"
+        },
         {
-          "type": "send",
-          "contract": "ZkWallet",
-          "address": "@input[contractAddress]",
-          "method": "addZkCommit",
-          "args": {
-            "_commit": "@input[commit]"
+            "name": "secondHalfOfHash",
+            "title": "Second half of guardian address hash",
+            "type": "int"
           }
-        }
-      ]
-    },
-    {
-      "id": "storeProof",
-      "title": "Store ZK proof",
-      "description": "Set pre-image hash",
-      "image": {
-        "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
-      },
-      "inputs": [
-        {
-          "name": "contractAddress",
-          "title": "wallet contract address",
-          "type": "address",
-          "validation": [
-            {
-              "type": "allowedTypes",
-              "contract": true
-            }
-          ]
-        },
-        {
-          "name": "a0",
-          "title": "Point a0",
-          "type": "int"
-        },
-        {
-          "name": "a1",
-          "title": "Point a0",
-          "type": "int"
-        },
-         {
-          "name": "b0",
-          "title": "Point b0",
-          "type": "int"
-        },
-        {
-          "name": "b1",
-          "title": "Point b1",
-          "type": "int"
-        },
-        {
-          "name": "b2",
-          "title": "Point b2",
-          "type": "int"
-        },
-        {
-          "name": "b3",
-          "title": "Point b3",
-          "type": "int"
-        },
-         {
-          "name": "c0",
-          "title": "Point c0",
-          "type": "int"
-        },
-        {
-          "name": "c1",
-          "title": "Point c1",
-          "type": "int"
-        },
-        {
-          "name": "input1",
-          "title": "Pre-image hash",
-          "type": "int"
-        },
-        {
-          "name": "input2",
-          "title": "Pre-image hash",
-          "type": "int"
-        }
       ],
       "execs": [
         {
           "type": "send",
           "contract": "ZkWallet",
           "address": "@input[contractAddress]",
-          "method": "storeProof",
+          "method": "addGuardian",
           "args": {
-            "_a0": "@input[a0]",
-            "_a1": "@input[a1]",
-            "_b00": "@input[b0]",
-            "_b01": "@input[b1]",
-            "_b10": "@input[b2]",
-            "_b11": "@input[b3]",
-            "_c0": "@input[c0]",
-            "_c1": "@input[c1]",
-            "_input1": "@input[input1]",
-            "_input2": "@input[input2]"
+            "_firstHalfOfHash": "@input[firstHalfOfHash]",
+            "_secondHalfOfHash": "@input[secondHalfOfHash]"
           }
         }
       ]
     },
     {
       "id": "zkRecover",
-      "title": "recover",
-      "description": "recover.",
+      "title": "zkRecover",
+      "description": "Recover user account in zero-knowledge",
       "image": {
         "url": "https://i.ibb.co/J2MC23k/icons8-restore-page-96.png"
       },
@@ -327,9 +224,24 @@
           "type": "address"
         },
         {
-          "name": "proofId",
-          "title": "Proof ID",
+          "name": "a",
+          "title": "Elliptic curve proof point",
           "type": "int"
+        },
+        {
+            "name": "b",
+            "title": "Elliptic curve proof point",
+            "type": "int"
+        },
+        {
+            "name": "c",
+            "title": "Elliptic curve proof point",
+            "type": "int"
+        },
+        {
+            "name": "inputs",
+            "title": "Public inputs to proof",
+            "type": "int"
         }
       ],
       "execs": [
@@ -339,8 +251,10 @@
           "address": "@input[contractAddress]",
           "method": "zkRecover",
           "args": {
-            "_recoveryAddress": "@input[recoveryAddress]",
-            "_proofId": "@input[proofId]"
+            "a": "@input[a]",
+            "b": "@input[b]",
+            "c": "@input[c]",
+            "inputs": "@input[inputs]"
           }
         }
       ]

@@ -541,6 +541,7 @@ library Pairing {
 }
 
 contract Verifier {
+    constructor () public {}
     using Pairing for *;
     struct VerifyingKey {
         Pairing.G1Point a;
