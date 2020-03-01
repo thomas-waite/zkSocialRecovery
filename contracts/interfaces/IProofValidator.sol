@@ -6,6 +6,6 @@ interface IProofValidator {
         uint[2] calldata a,
         uint[2][2] calldata b,
         uint[2] calldata c,
-        uint[1] calldata input)
+        uint[3] calldata input)
     external returns (bool);
 }
