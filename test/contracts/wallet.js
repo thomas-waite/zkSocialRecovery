@@ -7,7 +7,7 @@ dotenv.config();
 const ZkWallet = artifacts.require('./ZkWallet');
 const Validator = artifacts.require('./zk/guardian/verifier');
 
-contract.only('zkWallet', async (accounts) => {
+contract('zkWallet', async (accounts) => {
     let zkWallet;
     let validator;
     let proofObject;
@@ -16,7 +16,8 @@ contract.only('zkWallet', async (accounts) => {
     const transferable = true;
     const threshold = 1;
 
-    const hashedAddress = process.env.HASHED_GUARDIAN;
+    let firstHash;
+    let secondHash;
 
     beforeEach(async () => {
         zkWallet = await ZkWallet.new(owner, transferable, threshold);
@@ -26,6 +27,9 @@ contract.only('zkWallet', async (accounts) => {
 
         const rawProof = fs.readFileSync('./contracts/zk/guardian/proof.json');
         proofObject = JSON.parse(rawProof);
+
+        const { inputs } = proofObject;
+        [firstHash, secondHash] = inputs;
     });
 
     describe('Initialisation', async () => {
@@ -42,20 +46,20 @@ contract.only('zkWallet', async (accounts) => {
 
     describe('ZkRecover functionality', async () => {
         it('should add a guardian', async () => {
-            const { receipt } = await zkWallet.addZkCommit(hashedAddress);
+            const { receipt } = await zkWallet.addGuardian(firstHash, secondHash);
             expect(receipt.status).to.equal(true);
-
-            const guardianAdded = await zkWallet.zkCommits(hashedAddress);
-            expect(guardianAdded).to.equal(true);
         });
 
         it.only('should perform a zkRecover', async () => {
-            await zkWallet.addZkCommit(hashedAddress);
+            await zkWallet.addGuardian(firstHash, secondHash);
 
-            const { proof, inputs } = proofObject;
+            const {
+                proof: { a, b, c },
+                inputs,
+            } = proofObject;
 
             const recoveryAddress = randomHex(20);
-            const { receipt } = await zkWallet.zkRecover(recoveryAddress, proof.a, proof.b, proof.c, inputs);
+            const { receipt } = await zkWallet.zkRecover(recoveryAddress, a, b, c, inputs);
             expect(receipt.status).to.equal(true);
         });
     });
