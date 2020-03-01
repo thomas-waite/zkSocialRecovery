@@ -157,6 +157,43 @@
       ]
     },
     {
+        "id": "setProofValidator",
+        "title": "setProofValidator",
+        "description": "Link the proof validator",
+        "image": {
+          "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
+        },
+        "inputs": [
+          {
+            "name": "contractAddress",
+            "title": "address of the wallet",
+            "type": "address",
+            "validation": [
+              {
+                "type": "allowedTypes",
+                "contract": true
+              }
+            ]
+          },
+          {
+            "name": "_validator",
+            "title": "Proof validator",
+            "type": "address"
+          }
+        ],
+        "execs": [
+          {
+            "type": "send",
+            "contract": "ZkWallet",
+            "address": "@input[contractAddress]",
+            "method": "setProofValidator",
+            "args": {
+              "_validator": "@input[_validator]"
+            }
+          }
+        ]
+      },
+    {
       "id": "addGuardian",
       "title": "addGuardian",
       "description": "Add new guardian to wallet",
@@ -178,12 +215,12 @@
         {
           "name": "firstHalfOfHash",
           "title": "First half of guardian address hash",
-          "type": "int"
+          "type": "bytes32"
         },
         {
             "name": "secondHalfOfHash",
             "title": "Second half of guardian address hash",
-            "type": "int"
+            "type": "bytes32"
           }
       ],
       "execs": [
