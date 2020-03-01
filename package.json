@@ -1,7 +1,8 @@
 {
   "name": "zksocialrecovery",
   "version": "0.0.0",
-  "description": "",
+  "authors": "Tom Waite, Yannis Stamelakos, Makoto Inoue",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "test": "mocha --require @babel/polyfill --require  ./test/zk --bail --colors --exit --recursive --reporter spec",
