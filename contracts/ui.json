@@ -89,14 +89,14 @@
       "execs": [
         {
           "type": "call",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "owner",
           "saveResultAsInput": "owner"
         },
         {
           "type": "call",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "recoveryThreshold",
           "saveResultAsInput": "recoveryThreshold"
@@ -164,7 +164,7 @@
       "execs": [
         {
           "type": "send",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "transfer",
           "args": {
@@ -202,7 +202,7 @@
       "execs": [
         {
           "type": "send",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "addZkCommit",
           "args": {
@@ -210,8 +210,98 @@
           }
         }
       ]
-    }
-    ,
+    },
+    {
+      "id": "storeProof",
+      "title": "Store ZK proof",
+      "description": "Set pre-image hash",
+      "image": {
+        "url": "https://i.ibb.co/MMzQ7yp/icons8-key-96.png"
+      },
+      "inputs": [
+        {
+          "name": "contractAddress",
+          "title": "wallet contract address",
+          "type": "address",
+          "validation": [
+            {
+              "type": "allowedTypes",
+              "contract": true
+            }
+          ]
+        },
+        {
+          "name": "a0",
+          "title": "Point a0",
+          "type": "int"
+        },
+        {
+          "name": "a1",
+          "title": "Point a0",
+          "type": "int"
+        },
+         {
+          "name": "b0",
+          "title": "Point b0",
+          "type": "int"
+        },
+        {
+          "name": "b1",
+          "title": "Point b1",
+          "type": "int"
+        },
+        {
+          "name": "b2",
+          "title": "Point b2",
+          "type": "int"
+        },
+        {
+          "name": "b3",
+          "title": "Point b3",
+          "type": "int"
+        },
+         {
+          "name": "c0",
+          "title": "Point c0",
+          "type": "int"
+        },
+        {
+          "name": "c1",
+          "title": "Point c1",
+          "type": "int"
+        },
+        {
+          "name": "input1",
+          "title": "Pre-image hash",
+          "type": "int"
+        },
+        {
+          "name": "input2",
+          "title": "Pre-image hash",
+          "type": "int"
+        }
+      ],
+      "execs": [
+        {
+          "type": "send",
+          "contract": "ZkWallet",
+          "address": "@input[contractAddress]",
+          "method": "storeProof",
+          "args": {
+            "_a0": "@input[a0]",
+            "_a1": "@input[a1]",
+            "_b00": "@input[b0]",
+            "_b01": "@input[b1]",
+            "_b10": "@input[b2]",
+            "_b11": "@input[b3]",
+            "_c0": "@input[c0]",
+            "_c1": "@input[c1]",
+            "_input1": "@input[input1]",
+            "_input2": "@input[input2]"
+          }
+        }
+      ]
+    },
     {
       "id": "zkRecover",
       "title": "recover",
@@ -237,26 +327,20 @@
           "type": "address"
         },
         {
-          "name": "proofHash",
-          "title": "Proof Hash",
-          "type": "bytes32"
-        },
-        {
-          "name": "proofData",
-          "title": "Proof data",
-          "type": "string"
+          "name": "proofId",
+          "title": "Proof ID",
+          "type": "int"
         }
       ],
       "execs": [
         {
           "type": "send",
-          "contract": "Wallet",
+          "contract": "ZkWallet",
           "address": "@input[contractAddress]",
           "method": "zkRecover",
           "args": {
             "_recoveryAddress": "@input[recoveryAddress]",
-            "_proofHash": "@input[proofHash]",
-            "_proofData": "@input[proofData]"
+            "_proofId": "@input[proofId]"
           }
         }
       ]
