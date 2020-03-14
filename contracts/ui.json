@@ -213,12 +213,12 @@
             ]
           },
           {
-            "name": "_input1",
+            "name": "_firstHalfOfHash",
             "title": "First half of guardian address hash",
             "type": "bytes32"
           },
           {
-              "name": "_input2",
+              "name": "_secondHalfOfHash",
               "title": "Second half of guardian address hash",
               "type": "bytes32"
             }
@@ -230,8 +230,8 @@
             "address": "@input[contractAddress]",
             "method": "addGuardian",
             "args": {
-              "_input1": "@input[_input1]",
-              "_input2": "@input[_input2]"
+              "_firstHalfOfHash": "@input[_firstHalfOfHash]",
+              "_secondHalfOfHash": "@input[_secondHalfOfHash]"
             }
           }
         ]
