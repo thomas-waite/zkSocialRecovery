@@ -14,13 +14,13 @@ contract('zkWallet', async (accounts) => {
 
     const owner = accounts[0];
     const transferable = true;
-    const threshold = 1;
+    // const threshold = 1;
 
     let firstHash;
     let secondHash;
 
     beforeEach(async () => {
-        zkWallet = await ZkWallet.new(owner, transferable, threshold);
+        zkWallet = await ZkWallet.new(owner, transferable);
         validator = await Validator.new();
 
         await zkWallet.setProofValidator(validator.address);
@@ -50,7 +50,7 @@ contract('zkWallet', async (accounts) => {
             expect(receipt.status).to.equal(true);
         });
 
-        it.only('should perform a zkRecover', async () => {
+        it('should perform a zkRecover', async () => {
             await zkWallet.addGuardian(firstHash, secondHash);
 
             const {
