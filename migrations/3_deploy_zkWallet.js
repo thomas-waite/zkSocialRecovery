@@ -7,7 +7,5 @@ const proofValidatorAddress = randomHex(20);
 const transferable = true;
 
 module.exports = function (deployer, network, accounts) {
-    deployer.deploy(ZkWallet, accounts[0], transferable).then(async (wallet) => {
-        await wallet.setProofValidator(proofValidatorAddress);
-    });
+    deployer.deploy(ZkWallet, accounts[0], transferable);
 };

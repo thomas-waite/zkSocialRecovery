@@ -9,6 +9,6 @@ To get started:
 3) Start ganache in the background, `ganache-cli`
 4) Run `yarn install`
 5) Make sure you `Zokrates` and it's various dependencies installed: https://zokrates.github.io/gettingstarted.html 
-6) Run `yarn createProof` to setup the snark and create a proof
+6) Run `yarn createProof` to setup the snark and create a proof (this will take ~20secs before returning a result)
 7) Run `yarn start` to launch the UI on `localhost:3001`
 

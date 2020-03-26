@@ -5,8 +5,7 @@
   "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require @babel/polyfill --require  ./test/zk --bail --colors --exit --recursive --reporter spec",
-    "test:contracts": "truffle test ./test/contracts/wallet.js --network development",
+    "test": "truffle test --network development",
     "clean": "rm -r build",
     "createProof": "scripts/createProof.sh",
     "start": "truffle compile && solui view --spec contracts/ui.json --artifacts build/contracts"
@@ -25,6 +24,7 @@
     "bn.js": "^5.1.1",
     "chai": "^4.2.0",
     "dotenv": "^8.2.0",
+    "openzeppelin-solidity": "3.0.0-beta.0",
     "prettier": "^1.19.1",
     "truffle": "5.1.15",
     "web3-utils": "^1.2.6",

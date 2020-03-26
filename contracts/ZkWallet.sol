@@ -1,9 +1,9 @@
 pragma solidity ^0.6.1;
 
-
 import "./lib/ownable.sol";
-import "./lib/SafeMath.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./interfaces/IProofValidator.sol";
+import "./zk/verifier.sol";
 
 //// @title Smart contract wallet with ZK recovery capability.
 contract ZkWallet is Ownable {
@@ -23,17 +23,14 @@ contract ZkWallet is Ownable {
     /// @param _owner is the owner account of the wallet contract.
     /// @param _transferable indicates whether the contract ownership can be transferred.
     constructor(address payable _owner, bool _transferable) Ownable(_owner, _transferable) public {
+        Verifier validator = new Verifier();
+        validatorContract = address(validator);
+        emit ProofValidator(validatorContract);
     }
 
     /// @dev Receive function.
     fallback() external payable {
         emit Received(msg.sender, msg.value);
-    }
-
-    function setProofValidator(address _validator) public onlyOwner {
-        require(_validator != address(0x0), 'Wallet/can not set _validator to zero');
-        validatorContract = _validator;
-        emit ProofValidator(validatorContract);
     }
 
     function addGuardian(uint _firstHalfOfHash, uint _secondHalfOfHash) external onlyOwner {
