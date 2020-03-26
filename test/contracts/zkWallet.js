@@ -3,16 +3,18 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const { randomHex } = require('web3-utils');
 
+const { encodeProof } = require('../helpers/encodeProof');
+
 dotenv.config();
 const ZkWallet = artifacts.require('./ZkWallet');
 
 contract('zkWallet', async (accounts) => {
     let zkWallet;
-    let proofObject;
 
     const owner = accounts[0];
     const transferable = true;
 
+    let proofObject;
     let firstHash;
     let secondHash;
 
@@ -22,8 +24,9 @@ contract('zkWallet', async (accounts) => {
         const rawProof = fs.readFileSync('./contracts/zk/proof.json');
         proofObject = JSON.parse(rawProof);
 
-        const { inputs } = proofObject;
-        [firstHash, secondHash] = inputs;
+        ({
+            inputs: [firstHash, secondHash],
+        } = proofObject);
     });
 
     describe('Initialisation', async () => {
@@ -47,13 +50,11 @@ contract('zkWallet', async (accounts) => {
         it('should perform a zkRecover', async () => {
             await zkWallet.addGuardian(firstHash, secondHash);
 
-            const {
-                proof: { a, b, c },
-                inputs,
-            } = proofObject;
+            const proof = encodeProof(proofObject);
+            console.log({ proof });
 
             const recoveryAddress = randomHex(20);
-            const { receipt } = await zkWallet.zkRecover(recoveryAddress, a, b, c, inputs);
+            const { receipt } = await zkWallet.zkRecover(recoveryAddress, proof);
             expect(receipt.status).to.equal(true);
         });
     });

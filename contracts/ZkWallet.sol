@@ -39,7 +39,9 @@ contract ZkWallet is Ownable {
         emit AddGuardian(firstHash, secondHash);
     }
 
-    function zkRecover(address payable _recoveryAddress, uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) public returns (bool) {
+    function zkRecover(address payable _recoveryAddress, uint[] memory proof) public returns (bool) {
+        (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) = extractProof(proof);
+
         require(firstHash == inputs[0], 'guardian not approved');
         require(secondHash == inputs[1], 'guardian not approved');
 
@@ -56,5 +58,22 @@ contract ZkWallet is Ownable {
         require(_to != address(0), "destination cannot be zero");
         _to.transfer(_amount);
         emit Transferred(_to, _amount);
+    }
+
+    function extractProof(uint[] memory proof) internal pure returns (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) {
+        a[0] = proof[0];
+        a[1] = proof[1];
+
+        b[0][0] = proof[2];
+        b[0][1] = proof[3];
+        b[1][0] = proof[4];
+        b[1][1] = proof[5];
+
+        c[0] = proof[6];
+        c[1] = proof[7];
+
+        inputs[0] = proof[8];
+        inputs[1] = proof[9];
+        inputs[2] = proof[10];
     }
 }

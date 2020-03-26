@@ -212,24 +212,9 @@
                     "type": "address"
                 },
                 {
-                    "name": "a",
-                    "title": "Elliptic curve proof point",
-                    "type": "int"
-                },
-                {
-                    "name": "b",
-                    "title": "Elliptic curve proof point",
-                    "type": "int"
-                },
-                {
-                    "name": "c",
-                    "title": "Elliptic curve proof point",
-                    "type": "int"
-                },
-                {
-                    "name": "inputs",
-                    "title": "Public inputs to proof",
-                    "type": "int"
+                    "name": "proof",
+                    "title": "Proof",
+                    "type": "int[]"
                 }
             ],
             "execs": [
@@ -239,10 +224,8 @@
                     "address": "@input[contractAddress]",
                     "method": "zkRecover",
                     "args": {
-                        "a": "@input[a]",
-                        "b": "@input[b]",
-                        "c": "@input[c]",
-                        "inputs": "@input[inputs]"
+                        "_recoveryAddress": "@input[recoveryAddress]",
+                        "proof": "@input[proof]"
                     }
                 }
             ]
