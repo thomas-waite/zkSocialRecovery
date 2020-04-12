@@ -4,6 +4,7 @@ function encodeProof(proofObject) {
     const flatB = b.flat();
 
     const encodedProof = a.concat(flatB, c, inputs);
+    encodedProof.forEach((element) => element.slice(2));
 
     return encodedProof;
 }

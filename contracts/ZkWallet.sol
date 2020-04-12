@@ -39,7 +39,7 @@ contract ZkWallet is Ownable {
         emit AddGuardian(firstHash, secondHash);
     }
 
-    function zkRecover(address payable _recoveryAddress, uint[] memory proof) public returns (bool) {
+    function zkRecover(address payable _recoveryAddress, bytes32[] memory proof) public returns (bool) {
         (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) = extractProof(proof);
 
         require(firstHash == inputs[0], 'guardian not approved');
@@ -60,20 +60,20 @@ contract ZkWallet is Ownable {
         emit Transferred(_to, _amount);
     }
 
-    function extractProof(uint[] memory proof) internal pure returns (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) {
-        a[0] = proof[0];
-        a[1] = proof[1];
+    function extractProof(bytes32[] memory proof) internal pure returns (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) {
+        a[0] = uint256(proof[0]);
+        a[1] = uint256(proof[1]);
 
-        b[0][0] = proof[2];
-        b[0][1] = proof[3];
-        b[1][0] = proof[4];
-        b[1][1] = proof[5];
+        b[0][0] = uint256(proof[2]);
+        b[0][1] = uint256(proof[3]);
+        b[1][0] = uint256(proof[4]);
+        b[1][1] = uint256(proof[5]);
 
-        c[0] = proof[6];
-        c[1] = proof[7];
+        c[0] = uint256(proof[6]);
+        c[1] = uint256(proof[7]);
 
-        inputs[0] = proof[8];
-        inputs[1] = proof[9];
-        inputs[2] = proof[10];
+        inputs[0] = uint256(proof[8]);
+        inputs[1] = uint256(proof[9]);
+        inputs[2] = uint256(proof[10]);
     }
 }

@@ -51,7 +51,6 @@ contract('zkWallet', async (accounts) => {
             await zkWallet.addGuardian(firstHash, secondHash);
 
             const proof = encodeProof(proofObject);
-            console.log({ proof });
 
             const recoveryAddress = randomHex(20);
             const { receipt } = await zkWallet.zkRecover(recoveryAddress, proof);

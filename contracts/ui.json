@@ -214,7 +214,7 @@
                 {
                     "name": "proof",
                     "title": "Proof",
-                    "type": "int[]"
+                    "type": "bytes32[]"
                 }
             ],
             "execs": [
