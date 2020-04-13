@@ -8,7 +8,7 @@
     "test": "truffle test --network development",
     "clean": "rm -r build",
     "createProof": "scripts/createProof.sh",
-    "start": "truffle compile && solui view --spec contracts/ui.json --artifacts build/contracts"
+    "start": "truffle compile --all && solui view --spec contracts/ui.json --artifacts build/contracts"
   },
   "repository": {
     "type": "git",

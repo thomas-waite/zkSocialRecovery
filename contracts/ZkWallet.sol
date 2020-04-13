@@ -12,12 +12,12 @@ contract ZkWallet is Ownable {
 
     event Received(address indexed _from, uint _amount);
     event Transferred(address indexed _to, uint _amount);
-    event AddGuardian(uint firstHash, uint secondHash);
+    event AddGuardian(bytes32 firstHash, bytes32 secondHash);
     event ProofValidator(address indexed validatorContract);
 
     address public validatorContract;
-    uint public firstHash;
-    uint public secondHash;
+    bytes32 public firstHash;
+    bytes32 public secondHash;
 
     /// @dev Constructor initializes the wallet top up limit and the vault contract.
     /// @param _owner is the owner account of the wallet contract.
@@ -33,7 +33,7 @@ contract ZkWallet is Ownable {
         emit Received(msg.sender, msg.value);
     }
 
-    function addGuardian(uint _firstHalfOfHash, uint _secondHalfOfHash) external onlyOwner {
+    function addGuardian(bytes32 _firstHalfOfHash, bytes32 _secondHalfOfHash) external onlyOwner {
         firstHash = _firstHalfOfHash;
         secondHash = _secondHalfOfHash;
         emit AddGuardian(firstHash, secondHash);
@@ -42,8 +42,8 @@ contract ZkWallet is Ownable {
     function zkRecover(address payable _recoveryAddress, bytes32[] memory proof) public returns (bool) {
         (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) = extractProof(proof);
 
-        require(firstHash == inputs[0], 'guardian not approved');
-        require(secondHash == inputs[1], 'guardian not approved');
+        require(firstHash == bytes32(inputs[0]), 'guardian not approved');
+        require(secondHash == bytes32(inputs[1]), 'guardian not approved');
 
         bool isValid = IProofValidator(validatorContract).verifyTx(a, b, c, inputs);
         require(isValid == true, 'proof failed');
