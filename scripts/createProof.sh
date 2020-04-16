@@ -1,7 +1,7 @@
 # Exit script as soon as a command fails.
 set -o errexit
 
-cd ./contracts/zk/guardian
+cd ./contracts/zk
 
 # Run various zokrates scripts
 zokrates compile -i guardian.zok 
