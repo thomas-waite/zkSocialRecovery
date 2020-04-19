@@ -12,14 +12,13 @@ contract('zkWallet', async (accounts) => {
     let zkWallet;
 
     const owner = accounts[0];
-    const transferable = true;
 
     let proofObject;
     let firstHash;
     let secondHash;
 
     beforeEach(async () => {
-        zkWallet = await ZkWallet.new(owner, transferable);
+        zkWallet = await ZkWallet.new(owner);
 
         const rawProof = fs.readFileSync('./contracts/zk/proof.json');
         proofObject = JSON.parse(rawProof);

@@ -21,8 +21,7 @@ contract ZkWallet is Ownable {
 
     /// @dev Constructor initializes the wallet top up limit and the vault contract.
     /// @param _owner is the owner account of the wallet contract.
-    /// @param _transferable indicates whether the contract ownership can be transferred.
-    constructor(address payable _owner, bool _transferable) Ownable(_owner, _transferable) public {
+    constructor(address payable _owner) Ownable(_owner) public {
         Verifier validator = new Verifier();
         validatorContract = address(validator);
         emit ProofValidator(validatorContract);
@@ -48,7 +47,7 @@ contract ZkWallet is Ownable {
         bool isValid = IProofValidator(validatorContract).verifyTx(a, b, c, inputs);
         require(isValid == true, 'proof failed');
     
-        _transferOwnership(_recoveryAddress, true);
+        _transferOwnership(_recoveryAddress);
     }
 
     /// @dev Transfers the specified asset to the recipient's address.
