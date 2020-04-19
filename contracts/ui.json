@@ -21,12 +21,6 @@
                     "title": "Owner",
                     "type": "address",
                     "initialValue": "@env[account]"
-                },
-                {
-                    "name": "transferable",
-                    "title": "Transferable",
-                    "type": "bool",
-                    "placeholder": "true"
                 }
             ],
             "execs": [
@@ -34,8 +28,7 @@
                     "type": "deploy",
                     "contract": "ZkWallet",
                     "args": {
-                        "_owner": "@input[owner]",
-                        "_transferable": "@input[transferable]"
+                        "_owner": "@input[owner]"
                     },
                     "saveResultAsInput": "walletAddress"
                 }
