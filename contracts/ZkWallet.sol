@@ -42,23 +42,21 @@ contract ZkWallet is Ownable {
         emit AddGuardian(firstHash, secondHash);
     }
 
-    function zkRecover(address payable _recoveryAddress, bytes32[] memory proof) public returns (bool) {
-        (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) = extractProof(proof);
-
-        require(firstHash == bytes32(inputs[0]), 'guardian not approved');
-        require(secondHash == bytes32(inputs[1]), 'guardian not approved');
-
-        bool isValid = IProofValidator(validatorContract).verifyTx(a, b, c, inputs);
-        require(isValid == true, 'proof failed');
-    
-        _transferOwnership(_recoveryAddress);
+     /// @dev This function is used to get the wallet balance for any ERC20 or ETH.
+    /// @param _token is the address of an ERC20 token or 0x0 for ETH.
+    function balance(address _token) external view returns (uint256) {
+        if (_token != address(0)) {
+            return IERC20(_token).balanceOf(address(this));
+        } else {
+            return address(this).balance;
+        }
     }
 
     /// @dev Transfers the specified asset to the recipient's address.
     /// @param _to is the recipient's address.
-    /// @param _token is the address of an ERC20 token or 0x0 for ether.
+    /// @param _token is the address of an ERC20 token or 0x0 for ETH.
     /// @param _amount is the amount of assets to be transferred in base units.
-    function transfer(address payable _to, address _token, uint _amount) public onlyOwner {
+    function transfer(address payable _to, address _token, uint _amount) external onlyOwner {
         require(_to != address(0), "destination cannot be the 0 address");
 
         // address(0) is used to denote ETH
@@ -68,6 +66,18 @@ contract ZkWallet is Ownable {
             IERC20(_token).safeTransfer(_to, _amount);
         }
         emit Transferred(_to, _token, _amount);
+    }
+
+    function zkRecover(address payable _recoveryAddress, bytes32[] calldata proof) external returns (bool) {
+        (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) = extractProof(proof);
+
+        require(firstHash == bytes32(inputs[0]), 'guardian not approved');
+        require(secondHash == bytes32(inputs[1]), 'guardian not approved');
+
+        bool isValid = IProofValidator(validatorContract).verifyTx(a, b, c, inputs);
+        require(isValid == true, 'proof failed');
+    
+        _transferOwnership(_recoveryAddress);
     }
 
     function extractProof(bytes32[] memory proof) internal pure returns (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) {

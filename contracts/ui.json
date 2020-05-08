@@ -7,6 +7,15 @@
     "image": {
         "url": "https://i.ibb.co/tDmSSXw/icons8-socrates-100.png"
     },
+    "constants": {
+        "ethToken": {
+          "default":
+            {
+              "label": "ETH",
+              "address": "0x0000000000000000000000000000000000000000"
+            }   
+        }
+      },
     "panels": [
         {
             "id": "create",
@@ -68,6 +77,16 @@
                     "address": "@input[contractAddress]",
                     "method": "owner",
                     "saveResultAsInput": "owner"
+                },
+                {
+                    "type": "call",
+                    "contract": "ZkWallet",
+                    "address": "@input[contractAddress]",
+                    "method": "balance",
+                    "args": {
+                        "_token": "@constant[ethToken][address]"
+                      },
+                    "saveResultAsInput": "balance"
                 }
             ],
             "outputs": [
@@ -75,6 +94,11 @@
                     "title": "Wallet Owner",
                     "type": "address",
                     "value": "@input[owner]"
+                },
+                {
+                    "title": "Wallet Balance",
+                    "type": "address",
+                    "value": "@input[balance]"
                 }
             ]
         },
