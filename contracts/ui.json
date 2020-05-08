@@ -60,7 +60,7 @@
             "inputs": [
                 {
                     "name": "contractAddress",
-                    "title": "wallet contract address",
+                    "title": "Wallet contract address",
                     "type": "address",
                     "validation": [
                         {
@@ -100,6 +100,58 @@
                     "type": "address",
                     "value": "@input[balance]"
                 }
+            ]
+        },
+        {
+            "id": "view-balance",
+            "title": "ERC20 balance",
+            "description": "View your ERC20 balance.",
+            "image": {
+              "url": "https://i.ibb.co/rf14tmQ/icons8-money-bag-96.png"
+            },
+            "inputs": [
+              {
+                "name": "contractAddress",
+                "title": "Wallet contract address",
+                "type": "address",
+                "validation": [
+                  {
+                    "type": "allowedTypes",
+                    "contract": true
+                  }
+                ]
+              },
+              {
+                "name": "tokenAddress",
+                "title": "TokenAddress",
+                "type": "address",
+                "validation": [
+                  {
+                    "type": "allowedTypes",
+                    "contract": true,
+                    "eoa": true
+                  }
+                ]
+              }
+            ],
+            "execs": [
+              {
+                "type": "call",
+                "contract": "ZkWallet",
+                "address": "@input[contractAddress]",
+                "method": "balance",
+                "args": {
+                  "_token": "@input[tokenAddress]"
+                },
+                "saveResultAsInput": "balance"
+              }
+            ],
+            "outputs": [
+              {
+                "title": "Balance",
+                "type": "int",
+                "value": "@input[balance]"
+              }
             ]
         },
         {
