@@ -8,7 +8,7 @@ const fs = require('fs');
 const truffleAssert = require('truffle-assertions');
 const { randomHex } = require('web3-utils');
 
-const Validator = artifacts.require('./zk/verifier');
+const Validator = artifacts.require('./zk/Verifier');
 
 contract('Validator', async () => {
     let proofObject;

@@ -110,6 +110,18 @@
                     ]
                 },
                 {
+                    "name": "token",
+                    "title": "Token",
+                    "type": "address",
+                    "validation": [
+                        {
+                            "type": "allowedTypes",
+                            "eoa": true,
+                            "contract": true
+                        }
+                    ]
+                },
+                {
                     "name": "amount",
                     "title": "Amount to send",
                     "type": "int",
@@ -132,6 +144,7 @@
                     "method": "transfer",
                     "args": {
                         "_to": "@input[recipient]",
+                        "_token": "@input[token]",
                         "_amount": "@input[amount]"
                     }
                 }

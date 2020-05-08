@@ -1,17 +1,21 @@
 pragma solidity ^0.6.1;
 
-import "./lib/ownable.sol";
-import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./interfaces/IProofValidator.sol";
+import "./lib/ownable.sol";
 import "./zk/verifier.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/SafeERC20.sol";
+import "openzeppelin-solidity/contracts/utils/Address.sol";
 
 //// @title Smart contract wallet with ZK recovery capability.
 contract ZkWallet is Ownable {
 
+    using Address for address payable;
+    using SafeERC20 for IERC20;
     using SafeMath for uint256;
 
     event Received(address indexed _from, uint _amount);
-    event Transferred(address indexed _to, uint _amount);
+    event Transferred(address indexed _to, address indexed _token, uint _amount);
     event AddGuardian(bytes32 firstHash, bytes32 secondHash);
     event ProofValidator(address indexed validatorContract);
 
@@ -52,11 +56,18 @@ contract ZkWallet is Ownable {
 
     /// @dev Transfers the specified asset to the recipient's address.
     /// @param _to is the recipient's address.
+    /// @param _token is the address of an ERC20 token or 0x0 for ether.
     /// @param _amount is the amount of assets to be transferred in base units.
-    function transfer(address payable _to,  uint _amount) public onlyOwner {
-        require(_to != address(0), "destination cannot be zero");
-        _to.transfer(_amount);
-        emit Transferred(_to, _amount);
+    function transfer(address payable _to, address _token, uint _amount) public onlyOwner {
+        require(_to != address(0), "destination cannot be the 0 address");
+
+        // address(0) is used to denote ETH
+        if (_token == address(0)) {
+            _to.sendValue(_amount);
+        } else {
+            IERC20(_token).safeTransfer(_to, _amount);
+        }
+        emit Transferred(_to, _token, _amount);
     }
 
     function extractProof(bytes32[] memory proof) internal pure returns (uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[3] memory inputs) {
