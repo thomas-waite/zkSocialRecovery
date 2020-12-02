@@ -2,6 +2,8 @@
 
 __Warning: This is a hackathon project, do not use for anything serious and only for fun. It should definitely not be deployed to mainnet and is likely very possible to lose funds. Use at own risk.__
 
+Deployed at: https://gateway.temporal.cloud/ipns/ui.solui.dev/#l=QmTAMtWNxVFgznQhrWtYCwhqjom94nvTaQcXP9uPScTDgJ&shortEmbedUrl=https%3A%2F%2Fsolui.dev%2Fui%2FQmTAMtWNxVFgznQhrWtYCwhqjom94nvTaQcXP9uPScTDgJ
+
 # zKSocialRecovery
 This project is a proof of concept of `zkSocialRecovery` - the act of a `guardian` restoring a  user's access to their smart contract wallet, without the Ethereum address of the `guardian` being revealed. We use zero-knowledge technology in the form of zk-SNARKs. 
 
